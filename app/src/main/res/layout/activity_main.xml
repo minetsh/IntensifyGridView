@@ -8,9 +8,11 @@
         android:id="@+id/igv_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:autoFit="true"
-        app:blockSize="80dp"
+        android:background="#700"
+        app:autoFit="false"
         app:blockType="square"
-        app:maxLines="2"
-        app:spanCount="4" />
+        app:blockWidth="match_parent"
+        app:horizontalSpacing="2dp"
+        app:spanCount="4"
+        app:verticalSpacing="2dp" />
 </RelativeLayout>

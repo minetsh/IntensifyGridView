@@ -152,7 +152,7 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        return false;
+        return mGestureDetector.onTouchEvent(e);
     }
 
     @Override

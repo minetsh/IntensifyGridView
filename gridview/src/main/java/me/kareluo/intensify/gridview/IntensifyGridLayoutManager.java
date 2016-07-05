@@ -67,11 +67,13 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
     }
 
     public int getValidWidth() {
-        return getWidth() - getPaddingLeft() - getPaddingRight() - (getOrientation() == HORIZONTAL ? 0 : (getSpanCount() - 1) * mHorizontalSpacing);
+        return getWidth() - getPaddingLeft() - getPaddingRight()
+                - (getOrientation() == HORIZONTAL ? 0 : (getSpanCount() - 1) * mHorizontalSpacing);
     }
 
     public int getValidHeight() {
-        return getHeight() - getPaddingTop() - getPaddingBottom() - (getOrientation() == HORIZONTAL ? (getSpanCount() - 1) * mVerticalSpacing : 0);
+        return getHeight() - getPaddingTop() - getPaddingBottom()
+                - (getOrientation() == HORIZONTAL ? (getSpanCount() - 1) * mVerticalSpacing : 0);
     }
 
     public void computeSize() {
@@ -115,6 +117,14 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
                 mBlockHeight = height;
             }
         }
+    }
+
+    public int getBlockWidth() {
+        return mBlockWidth;
+    }
+
+    public int getBlockHeight() {
+        return mBlockHeight;
     }
 
     @Override
