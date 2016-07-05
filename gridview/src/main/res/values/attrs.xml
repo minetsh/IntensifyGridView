@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IntensifyGridView">
+        <attr name="horizontalSpacing" format="dimension" />
+        <attr name="verticalSpacing" format="dimension" />
+        <attr name="extraCount" format="integer" min="0">
+            <enum name="single" value="1" />
+        </attr>
+        <attr name="maxLength" format="integer" min="0" />
+        <attr name="maxLines" format="integer" min="0" />
+        <attr name="autoFit" format="boolean" />
+        <attr name="blockType" format="enum">
+            <enum name="rectangle" value="1" />
+            <enum name="square" value="3" />
+        </attr>
+        <attr name="blockSize" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="blockWidth" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="blockHeight" format="dimension">
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="ellipsize">
+            <enum name="none" value="0" />
+            <enum name="start" value="1" />
+            <enum name="end" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <!--<declare-styleable name="IntensifyPhotosView">-->
+
+        <!--<attr name="extraLayout" format="reference" />-->
+        <!--<attr name="uploadable" />-->
+        <!--<attr name="retryCount" format="integer" min="0" />-->
+
+    <!--</declare-styleable>-->
+
+</resources>
