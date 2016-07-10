@@ -26,58 +26,74 @@ public class IntensifyItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mVerticalSpacing == 0 && mHorizontalSpacing == 0) return;
-
-        int width = parent.getWidth(), height = parent.getHeight();
-
-        IntensifyGridLayoutManager gridLayoutManager = (IntensifyGridLayoutManager) parent.getLayoutManager();
-        int spanCount = gridLayoutManager.getSpanCount();
+        IntensifyGridLayoutManager manager = (IntensifyGridLayoutManager) parent.getLayoutManager();
         int position = parent.getChildLayoutPosition(view);
 
-        int blockWidth = gridLayoutManager.getBlockWidth();
-        int blockHeight = gridLayoutManager.getBlockHeight();
+        switch (manager.getSpacingGravity()) {
+            case IntensifyGridView.SHARE:
+                getShareItemOffsets(manager, outRect, position);
+                break;
+            case IntensifyGridView.START:
+            case IntensifyGridView.END:
+                getGravityItemOffsets(manager, outRect, position);
+                break;
+        }
+    }
 
-
+    private void getGravityItemOffsets(IntensifyGridLayoutManager manager, Rect outRect, int position) {
+        int spanCount = manager.getSpanCount();
+        int spacingGravity = manager.getSpacingGravity();
+        int spacing = manager.getSpacing() / spanCount;
+        int extra = manager.getSpacing() % spanCount;
         if (mOrientation == IntensifyGridView.HORIZONTAL) {
-            int spacing = height - blockHeight * spanCount;
-            spacing = spacing / spanCount + spacing % spanCount;
+            if (position >= spanCount) outRect.left = mHorizontalSpacing;
+            outRect.top = spacing - mVerticalSpacing;
+            switch (spacingGravity) {
+                case IntensifyGridView.START:
+                    outRect.top *= spanCount - position % spanCount;
+                    outRect.top += extra + mVerticalSpacing;
+                    break;
+                case IntensifyGridView.END:
+                    outRect.top *= -(position % spanCount);
+                    break;
+            }
+            outRect.bottom = -outRect.top;
+        } else {
+            if (position >= spanCount) outRect.top = mVerticalSpacing;
+            outRect.left = spacing - mHorizontalSpacing;
+            switch (spacingGravity) {
+                case IntensifyGridView.START:
+                    outRect.left *= spanCount - position % spanCount;
+                    outRect.left += extra + mHorizontalSpacing;
+                    break;
+                case IntensifyGridView.END:
+                    outRect.left *= -(position % spanCount);
+                    break;
+            }
+            outRect.right = -outRect.left;
+        }
+    }
 
+    private void getShareItemOffsets(IntensifyGridLayoutManager manager, Rect outRect, int position) {
+        int spanCount = manager.getSpanCount();
+        int extra = manager.getSpacingExtra();
+        int offset = manager.getSpacingOffset();
+        if (mOrientation == IntensifyGridView.HORIZONTAL) {
             if (position >= spanCount) {
                 outRect.left = mHorizontalSpacing;
             }
 
-            int i = position % spanCount;
-            if (i > 0) {
-                int sSpanCount = spanCount - 1;
-                int j = spacing % (sSpanCount);
-                if (i <= j) {
-                    outRect.top = i * (spacing / sSpanCount + 1);
-                    outRect.bottom = -i * (spacing / sSpanCount + 1);
-                } else {
-                    outRect.top = i * (spacing / sSpanCount) + j;
-                    outRect.bottom = -i * (spacing / sSpanCount) - j;
-                }
-            }
-
+            int cfc = position % spanCount;
+            outRect.top = cfc * offset + Math.min(cfc, extra);
+            outRect.bottom = -outRect.top;
         } else {
-            int spacing = width - blockWidth * spanCount;
-            spacing = spacing / spanCount + spacing % spanCount;
-
             if (position >= spanCount) {
                 outRect.top = mVerticalSpacing;
             }
 
-            int i = position % spanCount;
-            if (i > 0) {
-                int sSpanCount = spanCount - 1;
-                int j = spacing % (sSpanCount);
-                if (i <= j) {
-                    outRect.left = i * (spacing / sSpanCount + 1);
-                    outRect.right = -i * (spacing / sSpanCount + 1);
-                } else {
-                    outRect.left = i * (spacing / sSpanCount) + j;
-                    outRect.right = -i * (spacing / sSpanCount) - j;
-                }
-            }
+            int cfc = position % spanCount;
+            outRect.left = cfc * offset + Math.min(cfc, extra);
+            outRect.right = -outRect.left;
         }
     }
 }

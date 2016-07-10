@@ -25,7 +25,7 @@ public abstract class IntensifyGridAdapter<VH extends RecyclerView.ViewHolder> e
                 onBindEllipsizeViewHolder(holder, position);
                 break;
             case IntensifyGridView.TYPE_EXTRA:
-                onBindExtraViewHolder(holder, position);
+                // not use common binder.
                 break;
             default:
                 onBindCommonViewHolder(holder, position);

@@ -13,9 +13,17 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
 
     private int mVerticalSpacing = 0, mHorizontalSpacing = 0;
 
+    private int mSpacingGravity = IntensifyGridView.SHARE;
+
     private boolean mAutoFit = false;
     private int mBlockWidth = LayoutParams.WRAP_CONTENT, mBlockHeight = LayoutParams.WRAP_CONTENT;
     private int mBlockType = IntensifyGridView.RECTANGLE;
+
+    private int mSpacingExtra = 0;
+
+    private int mSpacingOffset = 0;
+
+    private int mSpacing = 0;
 
     public IntensifyGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -29,6 +37,8 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
 
         mBlockWidth = a.getLayoutDimension(R.styleable.IntensifyGridView_blockWidth, mBlockWidth);
         mBlockHeight = a.getLayoutDimension(R.styleable.IntensifyGridView_blockHeight, mBlockHeight);
+
+        mSpacingGravity = a.getInt(R.styleable.IntensifyGridView_spacingGravity, IntensifyGridView.SHARE);
         a.recycle();
     }
 
@@ -67,13 +77,19 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
     }
 
     public int getValidWidth() {
-        return getWidth() - getPaddingLeft() - getPaddingRight()
-                - (getOrientation() == HORIZONTAL ? 0 : (getSpanCount() - 1) * mHorizontalSpacing);
+        return getContentWidth() - (getOrientation() == HORIZONTAL ? 0 : (getSpanCount() - 1) * mHorizontalSpacing);
     }
 
     public int getValidHeight() {
-        return getHeight() - getPaddingTop() - getPaddingBottom()
-                - (getOrientation() == HORIZONTAL ? (getSpanCount() - 1) * mVerticalSpacing : 0);
+        return getContentHeight() - (getOrientation() == HORIZONTAL ? (getSpanCount() - 1) * mVerticalSpacing : 0);
+    }
+
+    public int getContentWidth() {
+        return getWidth() - getPaddingLeft() - getPaddingRight();
+    }
+
+    public int getContentHeight() {
+        return getHeight() - getPaddingTop() - getPaddingBottom();
     }
 
     public void computeSize() {
@@ -93,10 +109,17 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
             } else {
                 mBlockHeight = height / getSpanCount();
             }
+            int spanCount = getSpanCount();
             if (mBlockType == IntensifyGridView.SQUARE) {
                 mBlockWidth = mBlockHeight;
             } else if (mBlockWidth == LayoutParams.MATCH_PARENT) {
                 mBlockWidth = width;
+            }
+            mSpacing = getContentHeight() - mBlockHeight * spanCount;
+            int spacing = mSpacing / spanCount + mSpacing % spanCount;
+            if (spanCount > 1) {
+                mSpacingOffset = spacing / (spanCount - 1);
+                mSpacingExtra = spacing % (spanCount - 1);
             }
         } else {
             if (mAutoFit) {
@@ -111,10 +134,17 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
             } else {
                 mBlockWidth = width / getSpanCount();
             }
+            int spanCount = getSpanCount();
             if (mBlockType == IntensifyGridView.SQUARE) {
                 mBlockHeight = mBlockWidth;
             } else if (mBlockHeight == LayoutParams.MATCH_PARENT) {
                 mBlockHeight = height;
+            }
+            mSpacing = getContentWidth() - mBlockWidth * spanCount;
+            int spacing = mSpacing / spanCount + mSpacing % spanCount;
+            if (spanCount > 1) {
+                mSpacingOffset = spacing / (spanCount - 1);
+                mSpacingExtra = spacing % (spanCount - 1);
             }
         }
     }
@@ -125,6 +155,22 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
 
     public int getBlockHeight() {
         return mBlockHeight;
+    }
+
+    public int getSpacingOffset() {
+        return mSpacingOffset;
+    }
+
+    public int getSpacingExtra() {
+        return mSpacingExtra;
+    }
+
+    public int getSpacingGravity() {
+        return mSpacingGravity;
+    }
+
+    public int getSpacing() {
+        return mSpacing;
     }
 
     @Override

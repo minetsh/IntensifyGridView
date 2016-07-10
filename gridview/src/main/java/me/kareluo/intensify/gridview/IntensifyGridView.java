@@ -23,6 +23,8 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
 
     private int mVerticalSpacing = 0;
 
+    private int mSpacingGravity = SHARE;
+
     private int mMaxLength = Integer.MAX_VALUE;
     private int mMaxLines = Integer.MAX_VALUE;
 
@@ -36,12 +38,14 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
 
     protected OnItemLongClickListener mOnItemLongClickListener;
 
-    public static final int RECTANGLE = 1;
-    public static final int SQUARE = 3;
+    public static final int SQUARE = 1;
+    public static final int RECTANGLE = 3;
 
     public static final int NONE = 0;
+    public static final int SHARE = 0;
+
     public static final int START = 1;
-    public static final int END = 3;
+    public static final int END = 2;
 
     public static final int TYPE_ELLIPSIZE = -2;
     public static final int TYPE_EXTRA = -3;
@@ -73,6 +77,8 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
         mHorizontalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_horizontalSpacing, mHorizontalSpacing);
 
         mVerticalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_verticalSpacing, mVerticalSpacing);
+
+        mSpacingGravity = a.getInt(R.styleable.IntensifyGridView_spacingGravity, SHARE);
 
         a.recycle();
 
