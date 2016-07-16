@@ -2,6 +2,7 @@ package me.kareluo.intensify.gridview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -24,6 +25,10 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
     private int mVerticalSpacing = 0;
 
     private int mSpacingGravity = SHARE;
+
+    private Drawable mDividerDrawable;
+
+    private Drawable mSpacerDrawable;
 
     private int mMaxLength = Integer.MAX_VALUE;
     private int mMaxLines = Integer.MAX_VALUE;
@@ -79,6 +84,10 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
         mVerticalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_verticalSpacing, mVerticalSpacing);
 
         mSpacingGravity = a.getInt(R.styleable.IntensifyGridView_spacingGravity, SHARE);
+
+        mDividerDrawable = a.getDrawable(R.styleable.IntensifyGridView_android_divider);
+
+        mSpacerDrawable = a.getDrawable(R.styleable.IntensifyGridView_spacer);
 
         a.recycle();
 
@@ -169,6 +178,14 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
+    }
+
+    public Drawable getDivider() {
+        return mDividerDrawable;
+    }
+
+    public Drawable getSpacer() {
+        return mSpacerDrawable;
     }
 
     private class IntensifyGestureListener extends GestureDetector.SimpleOnGestureListener {

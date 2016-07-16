@@ -93,7 +93,7 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
     }
 
     public void computeSize() {
-        int width = getValidWidth(), height = getValidHeight();
+        int width = getContentWidth(), height = getContentHeight();
         if (width <= 0 || height <= 0) return;
 
         if (getOrientation() == HORIZONTAL) {
@@ -103,11 +103,11 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
                     case LayoutParams.MATCH_PARENT:
                         mBlockHeight = height;
                     default:
-                        setSpanCount(height / mBlockHeight);
+                        setSpanCount((height - mBlockHeight) / (mBlockHeight + mVerticalSpacing) + 1);
                         break;
                 }
             } else {
-                mBlockHeight = height / getSpanCount();
+                mBlockHeight = (height - (getSpanCount() - 1) * mVerticalSpacing) / getSpanCount();
             }
             int spanCount = getSpanCount();
             if (mBlockType == IntensifyGridView.SQUARE) {
@@ -128,11 +128,11 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
                     case LayoutParams.MATCH_PARENT:
                         mBlockWidth = width;
                     default:
-                        setSpanCount(width / mBlockWidth);
+                        setSpanCount((width - mBlockWidth) / (mBlockWidth + mHorizontalSpacing) + 1);
                         break;
                 }
             } else {
-                mBlockWidth = width / getSpanCount();
+                mBlockWidth = (width - (getSpanCount() - 1) * mHorizontalSpacing) / getSpanCount();
             }
             int spanCount = getSpanCount();
             if (mBlockType == IntensifyGridView.SQUARE) {

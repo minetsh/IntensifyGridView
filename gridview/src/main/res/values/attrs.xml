@@ -35,6 +35,8 @@
             <enum name="start" value="1" />
             <enum name="end" value="2" />
         </attr>
+        <attr name="android:divider" />
+        <attr name="spacer" format="color|reference" />
     </declare-styleable>
 
     <!--<declare-styleable name="IntensifyPhotosView">-->

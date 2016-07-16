@@ -1,6 +1,11 @@
 package me.kareluo.intensify.gridview;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -21,6 +26,67 @@ public class IntensifyItemDecoration extends RecyclerView.ItemDecoration {
 
     public void setOrientation(int orientation) {
         mOrientation = orientation;
+    }
+
+    @Override
+    public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+        IntensifyGridView intensifyGridView = (IntensifyGridView) parent;
+        IntensifyGridLayoutManager layoutManager = intensifyGridView.getLayoutManager();
+        Drawable divider = intensifyGridView.getDivider();
+        int spanCount = layoutManager.getSpanCount();
+        int childCount = parent.getChildCount();
+        if (divider != null) {
+            if (mOrientation == IntensifyGridView.VERTICAL) {
+                int left = parent.getPaddingLeft();
+                int right = parent.getWidth() - parent.getPaddingRight();
+                for (int i = spanCount; i < childCount; i += spanCount) {
+                    View child = parent.getChildAt(i);
+                    int bottom = child.getTop() + Math.round(ViewCompat.getTranslationY(child));
+                    int top = bottom - mVerticalSpacing;
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(canvas);
+                }
+            } else {
+                int top = parent.getPaddingTop();
+                int bottom = parent.getHeight() - parent.getPaddingBottom();
+                for (int i = spanCount; i < childCount; i += spanCount) {
+                    View child = parent.getChildAt(i);
+                    int right = child.getLeft() + Math.round(ViewCompat.getTranslationX(child));
+                    int left = right - mHorizontalSpacing;
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(canvas);
+                }
+            }
+        }
+
+        Drawable spacer = intensifyGridView.getSpacer();
+        if (spacer != null) {
+            if (mOrientation == IntensifyGridView.VERTICAL) {
+                for (int i = 0; i < childCount; i++) {
+                    if (i % spanCount > 0) {
+                        View child = parent.getChildAt(i);
+                        int top = child.getTop();
+                        int bottom = child.getBottom();
+                        int right = child.getLeft();
+                        int left = parent.getChildAt(i - 1).getRight();
+                        spacer.setBounds(left, top, right, bottom);
+                        spacer.draw(canvas);
+                    }
+                }
+            } else {
+                for (int i = 0; i < childCount; i++) {
+                    if (i % spanCount > 0) {
+                        View child = parent.getChildAt(i);
+                        int left = child.getLeft();
+                        int right = child.getRight();
+                        int bottom = child.getTop();
+                        int top = parent.getChildAt(i - 1).getBottom();
+                        spacer.setBounds(left, top, right, bottom);
+                        spacer.draw(canvas);
+                    }
+                }
+            }
+        }
     }
 
     @Override

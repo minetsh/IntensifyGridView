@@ -8,12 +8,15 @@
         android:id="@+id/igv_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:divider="@drawable/spacer_bar"
+        android:orientation="horizontal"
         app:autoFit="true"
         app:blockHeight="80dp"
         app:blockType="square"
         app:blockWidth="80dp"
-        app:horizontalSpacing="1dp"
+        app:horizontalSpacing="8dp"
+        app:spacer="@drawable/spacer_bar"
         app:spacingGravity="share"
-        app:verticalSpacing="1dp" />
+        app:verticalSpacing="8dp" />
+
 </RelativeLayout>
