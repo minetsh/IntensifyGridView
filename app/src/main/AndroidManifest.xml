@@ -15,6 +15,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".EllipsizeDemoActivity"
+            android:label="@string/label_ellipsize" />
+
+        <activity android:name=".ExtraDemoActivity"
+            android:label="@string/label_extra"/>
+
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/label_setting"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
     </application>
 
 </manifest>

@@ -1,29 +1,30 @@
 package me.kareluo.intensify.sample;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 import me.kareluo.intensify.gridview.IntensifyGridAdapter;
 import me.kareluo.intensify.gridview.IntensifyGridView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     private TestAdapter mAdapter;
 
     private IntensifyGridView mGridView;
-    private int[] mResIds = {R.mipmap.a, R.mipmap.b, R.mipmap.d, R.mipmap.e,
-            R.mipmap.f, R.mipmap.g, R.mipmap.h, R.mipmap.i, R.mipmap.j, R.mipmap.k, R.mipmap.l,
-            R.mipmap.m, R.mipmap.n, R.mipmap.o, R.mipmap.p, R.mipmap.q, R.mipmap.r, R.mipmap.s,
-            R.mipmap.u, R.mipmap.v, R.mipmap.x, R.mipmap.y, R.mipmap.z, R.mipmap.aa,
-            R.mipmap.ab, R.mipmap.ac, R.mipmap.ad, R.mipmap.ae, R.mipmap.af, R.mipmap.ag,
-            R.mipmap.ah, R.mipmap.ai, R.mipmap.aj, R.mipmap.ak, R.mipmap.am, R.mipmap.an};
+
+    private static final int REQ_SETTING = 1;
+
+    private static final int ITEM_COUNT = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +33,68 @@ public class MainActivity extends AppCompatActivity {
         mGridView = (IntensifyGridView) findViewById(R.id.igv_grid);
         mAdapter = new TestAdapter(mGridView);
 
+        mGridView.setHasFixedSize(true);
+
         mGridView.setOnItemClickListener(new IntensifyGridView.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.ViewHolder holder) {
-                Toast.makeText(MainActivity.this, "点击:" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "点击:" + holder.getAdapterPosition(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
         mGridView.setOnItemLongClickListener(new IntensifyGridView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(RecyclerView.ViewHolder holder) {
-                Toast.makeText(MainActivity.this, "长按:" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "长按:" + holder.getAdapterPosition(),
+                        Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_setting:
+                startActivityForResult(new Intent(this, SettingActivity.class), REQ_SETTING);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQ_SETTING:
+                updateSetting();
+                return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateSetting() {
+        mGridView.setAutoFix(SettingConfig.AUTO_FIT);
+        mGridView.setSpanCount(SettingConfig.SPAN_COUNT);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_ellipsize:
+                startActivity(new Intent(this, EllipsizeDemoActivity.class));
+                break;
+            case R.id.btn_extra:
+                startActivity(new Intent(this, ExtraDemoActivity.class));
+                break;
+        }
     }
 
     private class TestAdapter extends IntensifyGridAdapter<TestViewHolder> {
@@ -57,51 +105,54 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onBindCommonViewHolder(TestViewHolder holder, int position) {
-            holder.update(mResIds[position]);
-            Log.d(TAG, "POSITION=" + position);
+            holder.update(position);
         }
 
         @Override
         protected void onBindEllipsizeViewHolder(TestViewHolder holder, int position) {
-
-        }
-
-        @Override
-        protected void onBindExtraViewHolder(TestViewHolder holder, int position) {
-
+            holder.update(position, getCount() - getItemCount());
         }
 
         @Override
         public TestViewHolder onCreateCommonViewHolder(ViewGroup parent, int viewType) {
-            ImageView imageView = new ImageView(parent.getContext());
-            imageView.setBackgroundResource(android.R.color.black);
-            return new TestViewHolder(imageView);
+            return new TestViewHolder(new TextItemView(getBaseContext()));
         }
 
         @Override
         public TestViewHolder onCreateEllipsizeViewHolder(ViewGroup parent) {
-            ImageView imageView = new ImageView(parent.getContext());
-            imageView.setBackgroundResource(android.R.color.black);
-            return new TestViewHolder(imageView);
+            return new TestViewHolder(new TextItemView(getBaseContext()));
+        }
+
+        @Override
+        public TestViewHolder onCreateExtraViewHolder(ViewGroup parent) {
+            return new TestViewHolder(new ExtraItemView(getBaseContext()));
         }
 
         @Override
         public int getCount() {
-            return mResIds.length;
+            return ITEM_COUNT;
         }
     }
 
     private class TestViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView mImageView;
+        private TextItemView mTextItemView;
 
-        public TestViewHolder(ImageView itemView) {
+        public TestViewHolder(TextItemView itemView) {
             super(itemView);
-            mImageView = itemView;
+            mTextItemView = itemView;
         }
 
-        public void update(int resId) {
-            mImageView.setImageResource(resId);
+        public TestViewHolder(ExtraItemView itemView) {
+            super(itemView);
+        }
+
+        public void update(int position) {
+            mTextItemView.update(String.valueOf(position));
+        }
+
+        public void update(int position, int count) {
+            mTextItemView.update(String.format(Locale.CHINA, "%d:%d", position, count));
         }
     }
 }

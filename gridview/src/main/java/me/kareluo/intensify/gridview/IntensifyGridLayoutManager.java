@@ -5,25 +5,30 @@ import android.content.res.TypedArray;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 /**
  * Created by felix on 16/7/4.
  */
 public class IntensifyGridLayoutManager extends GridLayoutManager {
 
-    private int mVerticalSpacing = 0, mHorizontalSpacing = 0;
-
-    private int mSpacingGravity = IntensifyGridView.SHARE;
-
-    private boolean mAutoFit = false;
-    private int mBlockWidth = LayoutParams.WRAP_CONTENT, mBlockHeight = LayoutParams.WRAP_CONTENT;
-    private int mBlockType = IntensifyGridView.RECTANGLE;
+    private int mSpacing = 0;
 
     private int mSpacingExtra = 0;
 
     private int mSpacingOffset = 0;
 
-    private int mSpacing = 0;
+    private boolean mAutoFit = false;
+
+    private int mVerticalSpacing = 0, mHorizontalSpacing = 0;
+
+    private int mSpacingGravity = IntensifyGridView.SHARE;
+
+    private int mBlockWidth = LayoutParams.WRAP_CONTENT;
+
+    private int mBlockHeight = LayoutParams.WRAP_CONTENT;
+
+    private int mBlockType = IntensifyGridView.RECTANGLE;
 
     public IntensifyGridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -38,6 +43,10 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
         mBlockWidth = a.getLayoutDimension(R.styleable.IntensifyGridView_blockWidth, mBlockWidth);
         mBlockHeight = a.getLayoutDimension(R.styleable.IntensifyGridView_blockHeight, mBlockHeight);
 
+        mHorizontalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_horizontalSpacing, 0);
+
+        mVerticalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_verticalSpacing, 0);
+
         mSpacingGravity = a.getInt(R.styleable.IntensifyGridView_spacingGravity, IntensifyGridView.SHARE);
         a.recycle();
     }
@@ -50,9 +59,17 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
         super(context, spanCount, orientation, reverseLayout);
     }
 
+    public void setAutoFit(boolean autoFit) {
+        if (mAutoFit ^ autoFit) {
+            mAutoFit = autoFit;
+            requestLayout();
+        }
+    }
+
     public void setSpacing(int verticalSpacing, int horizontalSpacing) {
         mVerticalSpacing = verticalSpacing;
         mHorizontalSpacing = horizontalSpacing;
+        requestLayout();
     }
 
     @Override
@@ -74,14 +91,6 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         computeSize();
         super.onLayoutChildren(recycler, state);
-    }
-
-    public int getValidWidth() {
-        return getContentWidth() - (getOrientation() == HORIZONTAL ? 0 : (getSpanCount() - 1) * mHorizontalSpacing);
-    }
-
-    public int getValidHeight() {
-        return getContentHeight() - (getOrientation() == HORIZONTAL ? (getSpanCount() - 1) * mVerticalSpacing : 0);
     }
 
     public int getContentWidth() {
@@ -173,8 +182,26 @@ public class IntensifyGridLayoutManager extends GridLayoutManager {
         return mSpacing;
     }
 
+    public int getVerticalSpacing() {
+        return mVerticalSpacing;
+    }
+
+    public int getHorizontalSpacing() {
+        return mHorizontalSpacing;
+    }
+
     @Override
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
         return new LayoutParams(mBlockWidth, mBlockHeight);
+    }
+
+    @Override
+    public RecyclerView.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+        return super.generateLayoutParams(lp);
+    }
+
+    @Override
+    public RecyclerView.LayoutParams generateLayoutParams(Context c, AttributeSet attrs) {
+        return super.generateLayoutParams(c, attrs);
     }
 }

@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">IntensifyGridView</string>
+    <string name="setting">设置</string>
+    <string name="auto_fit">自动布局</string>
+    <string name="span_count">列数</string>
+    <string name="label_setting">配置</string>
+    <string name="label_ellipsize">省略布局演示</string>
+    <string name="label_extra">额外布局演示</string>
+
+    <string-array name="preference_span_count_names">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
 </resources>

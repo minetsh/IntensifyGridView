@@ -16,26 +16,31 @@ import android.view.View;
 public class IntensifyGridView extends RecyclerView implements RecyclerView.OnItemTouchListener {
     private static final String TAG = "IntensifyGridView";
 
+    /**
+     * 额外条目数量
+     */
     private int mExtraCount = 0;
 
+    /**
+     * 省略条目位置
+     */
     private int mEllipsize = NONE;
 
-    private int mHorizontalSpacing = 0;
+    /**
+     * 最大条目数量
+     */
+    private int mMaxLength = Integer.MAX_VALUE;
 
-    private int mVerticalSpacing = 0;
-
-    private int mSpacingGravity = SHARE;
+    /**
+     * 最大行数
+     */
+    private int mMaxLines = Integer.MAX_VALUE;
 
     private Drawable mDividerDrawable;
 
     private Drawable mSpacerDrawable;
 
-    private int mMaxLength = Integer.MAX_VALUE;
-    private int mMaxLines = Integer.MAX_VALUE;
-
     private GestureDetector mGestureDetector;
-
-    private IntensifyItemDecoration mDecoration;
 
     private IntensifyGridLayoutManager mLayoutManager;
 
@@ -77,30 +82,26 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
 
         mEllipsize = a.getInt(R.styleable.IntensifyGridView_ellipsize, NONE);
 
-        mExtraCount = a.getInt(R.styleable.IntensifyGridView_extraCount, mExtraCount);
-
-        mHorizontalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_horizontalSpacing, mHorizontalSpacing);
-
-        mVerticalSpacing = a.getDimensionPixelSize(R.styleable.IntensifyGridView_verticalSpacing, mVerticalSpacing);
-
-        mSpacingGravity = a.getInt(R.styleable.IntensifyGridView_spacingGravity, SHARE);
-
-        mDividerDrawable = a.getDrawable(R.styleable.IntensifyGridView_android_divider);
+        mExtraCount = a.getInt(R.styleable.IntensifyGridView_extraCount, 0);
 
         mSpacerDrawable = a.getDrawable(R.styleable.IntensifyGridView_spacer);
-
+        mDividerDrawable = a.getDrawable(R.styleable.IntensifyGridView_android_divider);
         a.recycle();
 
-        mDecoration = new IntensifyItemDecoration(mVerticalSpacing, mHorizontalSpacing);
-        addItemDecoration(mDecoration);
-
-        mLayoutManager = new IntensifyGridLayoutManager(context, attrs, defStyle, 0);
-        mLayoutManager.setSpacing(mVerticalSpacing, mHorizontalSpacing);
-
-        mDecoration.setOrientation(mLayoutManager.getOrientation());
-        setLayoutManager(mLayoutManager);
+        addItemDecoration(new IntensifyItemDecoration());
+        setLayoutManager(mLayoutManager = new IntensifyGridLayoutManager(context, attrs, defStyle, 0));
         mGestureDetector = new GestureDetector(context, new IntensifyGestureListener());
         addOnItemTouchListener(this);
+    }
+
+    public void setAutoFix(boolean autoFix) {
+        mLayoutManager.setAutoFit(autoFix);
+    }
+
+    public void setSpanCount(int spanCount) {
+        mLayoutManager.setSpanCount(spanCount);
+        requestLayout();
+        refreshDrawableState();
     }
 
     public void setMaxLines(int maxLines) {
@@ -161,8 +162,11 @@ public class IntensifyGridView extends RecyclerView implements RecyclerView.OnIt
     }
 
     public void setSpacing(int verticalSpacing, int horizontalSpacing) {
-        mDecoration.set(verticalSpacing, horizontalSpacing);
         mLayoutManager.setSpacing(verticalSpacing, horizontalSpacing);
+    }
+
+    public void setOrientation(int orientation) {
+        mLayoutManager.setOrientation(orientation);
     }
 
     @Override
