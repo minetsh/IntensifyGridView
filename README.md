@@ -1,5 +1,5 @@
 # IntensifyGridView
-![预览](/screenshot/merge.jpg)
+![预览](screenshot/merge.jpg)
 
 # Sample
 
