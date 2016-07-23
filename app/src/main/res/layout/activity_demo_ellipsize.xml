@@ -16,4 +16,9 @@
         app:spanCount="3"
         app:verticalSpacing="1dp" />
 
+    <GridView
+        android:layout_width="match_parent"
+        android:numColumns="auto_fit"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

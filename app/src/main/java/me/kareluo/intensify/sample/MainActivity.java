@@ -114,7 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected void onBindEllipsizeViewHolder(DemoViewHolder holder, int position) {
-            holder.update(position, getCount() - getItemCount());
+            holder.update(position, getEllipsizeCount());
+        }
+
+        @Override
+        protected void onBindExtraViewHolder(DemoViewHolder holder, int position) {
+            super.onBindExtraViewHolder(holder, position);
         }
 
         @Override
