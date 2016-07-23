@@ -23,16 +23,16 @@
         android:id="@+id/igv_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?colorAccent"
-        android:divider="@drawable/spacer_bar"
+        android:divider="?colorAccent"
         android:orientation="vertical"
         app:blockSize="match_parent"
         app:blockType="square"
         app:ellipsize="end"
-        app:horizontalSpacing="1dp"
+        app:horizontalSpacing="4dp"
         app:maxLines="30"
+        app:spacer="?colorAccent"
         app:spacingGravity="share"
         app:spanCount="4"
-        app:verticalSpacing="1dp" />
+        app:verticalSpacing="4dp" />
 
 </LinearLayout>

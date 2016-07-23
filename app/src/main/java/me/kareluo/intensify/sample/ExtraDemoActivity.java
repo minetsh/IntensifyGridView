@@ -24,9 +24,12 @@ public class ExtraDemoActivity extends AppCompatActivity implements IntensifyGri
 
     private DemoAdapter mAdapter;
 
-    private static final int[] mResIds = {R.mipmap.a, R.mipmap.b,
-            R.mipmap.d, R.mipmap.e, R.mipmap.f, R.mipmap.g, R.mipmap.h,
-            R.mipmap.i, R.mipmap.j, R.mipmap.k, R.mipmap.l};
+    private static final int[] mResIds = {
+            R.mipmap.a, R.mipmap.b, R.mipmap.d, R.mipmap.e, R.mipmap.f,
+            R.mipmap.g, R.mipmap.h, R.mipmap.i, R.mipmap.j, R.mipmap.k,
+            R.mipmap.l, R.mipmap.m, R.mipmap.n, R.mipmap.o, R.mipmap.p,
+            R.mipmap.q, R.mipmap.r, R.mipmap.t, R.mipmap.w
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

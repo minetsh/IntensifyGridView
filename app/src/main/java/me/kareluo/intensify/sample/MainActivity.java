@@ -2,6 +2,7 @@ package me.kareluo.intensify.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import java.util.Locale;
 
 import me.kareluo.intensify.gridview.IntensifyGridAdapter;
 import me.kareluo.intensify.gridview.IntensifyGridView;
@@ -24,7 +23,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int REQ_SETTING = 1;
 
-    private static final int ITEM_COUNT = 100;
+    private static final int[] mResIds = {
+            R.mipmap.a, R.mipmap.b, R.mipmap.d, R.mipmap.e, R.mipmap.f,
+            R.mipmap.g, R.mipmap.h, R.mipmap.i, R.mipmap.j, R.mipmap.k,
+            R.mipmap.l, R.mipmap.m, R.mipmap.n, R.mipmap.o, R.mipmap.p,
+            R.mipmap.q, R.mipmap.r, R.mipmap.t, R.mipmap.w
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,62 +101,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private class TestAdapter extends IntensifyGridAdapter<TestViewHolder> {
+    private class TestAdapter extends IntensifyGridAdapter<DemoViewHolder> {
 
         public TestAdapter(@NonNull IntensifyGridView intensifyGridView) {
             super(intensifyGridView);
         }
 
         @Override
-        protected void onBindCommonViewHolder(TestViewHolder holder, int position) {
-            holder.update(position);
+        protected void onBindCommonViewHolder(DemoViewHolder holder, int position) {
+            holder.update(mResIds[position]);
         }
 
         @Override
-        protected void onBindEllipsizeViewHolder(TestViewHolder holder, int position) {
+        protected void onBindEllipsizeViewHolder(DemoViewHolder holder, int position) {
             holder.update(position, getCount() - getItemCount());
         }
 
         @Override
-        public TestViewHolder onCreateCommonViewHolder(ViewGroup parent, int viewType) {
-            return new TestViewHolder(new TextItemView(getBaseContext()));
+        public DemoViewHolder onCreateCommonViewHolder(ViewGroup parent, int viewType) {
+            return new DemoViewHolder(new ImageItemView(getBaseContext()));
         }
 
         @Override
-        public TestViewHolder onCreateEllipsizeViewHolder(ViewGroup parent) {
-            return new TestViewHolder(new TextItemView(getBaseContext()));
+        public DemoViewHolder onCreateEllipsizeViewHolder(ViewGroup parent) {
+            return new DemoViewHolder(new ImageItemView(getBaseContext()));
         }
 
         @Override
-        public TestViewHolder onCreateExtraViewHolder(ViewGroup parent) {
-            return new TestViewHolder(new ExtraItemView(getBaseContext()));
+        public DemoViewHolder onCreateExtraViewHolder(ViewGroup parent) {
+            return new DemoViewHolder(new ImageItemView(getBaseContext()));
         }
 
         @Override
         public int getCount() {
-            return ITEM_COUNT;
+            return mResIds.length;
         }
     }
 
-    private class TestViewHolder extends RecyclerView.ViewHolder {
+    private static class DemoViewHolder extends RecyclerView.ViewHolder {
 
-        private TextItemView mTextItemView;
+        private ImageItemView mImageItemView;
 
-        public TestViewHolder(TextItemView itemView) {
+        public DemoViewHolder(ImageItemView itemView) {
             super(itemView);
-            mTextItemView = itemView;
+            mImageItemView = itemView;
         }
 
-        public TestViewHolder(ExtraItemView itemView) {
-            super(itemView);
+        public void update(@DrawableRes int resId) {
+            mImageItemView.update(resId);
         }
 
-        public void update(int position) {
-            mTextItemView.update(String.valueOf(position));
-        }
-
-        public void update(int position, int count) {
-            mTextItemView.update(String.format(Locale.CHINA, "%d:%d", position, count));
+        public void update(@DrawableRes int resId, int count) {
+            mImageItemView.update(resId, count);
         }
     }
 }
