@@ -13,6 +13,7 @@
 
 # Demo
 安装 [apk](https://www.pgyer.com/igridview) 文件预览效果，或者通过下面二维码去下载安装：
+
 ![Demo 二维码](screenshot/code.png)
 
 # Usage
